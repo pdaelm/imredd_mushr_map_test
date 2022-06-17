@@ -1,0 +1,36 @@
+<launch>
+    <arg name="map" default="$(find mushr_rhc_ros)/maps/out.yaml" />
+    <arg name="c2g_map" default="$(find mushr_rhc_ros)/maps/out.yaml" />
+
+    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map)" />
+    <node pkg="map_server" name="c2g_map" type="map_server" args="$(arg c2g_map)">
+        <remap from="/static_map" to="/c2g/static_map" />
+        <remap from="/map_metadata" to="/c2g/map_metadata" />
+        <remap from="/map" to="/c2g/map" />
+    </node>
+
+    <param name="map_file" value="$(arg c2g_map)" />
+
+    <arg name="car_name" default="car" />
+
+    <!-- Launch car -->
+
+    <group ns="$(arg car_name)">
+        <remap from="/$(arg car_name)/initialpose" to="/initialpose" />
+
+        <include file="$(find mushr_sim)/launch/single_car.launch">
+            <!-- Could be racecar-mit, racecar-uw-tx2, or racecar-uw-nano -->
+            <arg name="racecar_version" value="racecar-uw-nano" />
+            <!-- The colors of the racecar, should be of the form "-<platform_color>-<inset_color>" -->
+            <!-- An empty string will result in the default URDF -->
+              <!-- Check CMakeLists.txt of mushr_description for appropriate values -->
+            <arg name="racecar_color" value="" />
+
+            <arg name="car_name" value="$(arg car_name)" />
+         </include>
+    </group>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find imredd_mushr_map_test)/config/rviz.rviz" required="true"/>
+
+
+</launch>
