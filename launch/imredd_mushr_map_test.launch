@@ -1,6 +1,6 @@
 <launch>
-    <arg name="map" default="$(find mushr_rhc_ros)/maps/out.yaml" />
-    <arg name="c2g_map" default="$(find mushr_rhc_ros)/maps/out.yaml" />
+    <arg name="map" default="$(find imredd_mushr_map_test)/maps/out.yaml" />
+    <arg name="c2g_map" default="$(find imredd_mushr_map_test)/maps/out.yaml" />
 
     <node pkg="map_server" name="map_server" type="map_server" args="$(arg map)" />
     <node pkg="map_server" name="c2g_map" type="map_server" args="$(arg c2g_map)">
