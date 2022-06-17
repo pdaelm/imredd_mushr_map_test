@@ -1,0 +1,6 @@
+image: Mandelieu_BAv2.png
+resolution: 0.1
+origin: [-20, -19.5, 0]
+occupied_thresh: 0.1
+free_thresh: 0.09
+negate: 0
