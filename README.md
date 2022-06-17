@@ -22,10 +22,6 @@ source devel/setup.bash
 
 # RUN 
 
-In three different shells:
-
 ```
-roslaunch mushr_sim teleop.launch
-roslaunch mushr_rhc_ros imredd_map_integration.launch
-rviz
+roslaunch imredd_mushr_map_test imredd_mushr_map_test.launch 
 ```
