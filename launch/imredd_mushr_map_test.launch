@@ -1,6 +1,7 @@
 <launch>
     <arg name="map" default="$(find imredd_mushr_map_test)/maps/out.yaml" />
     <arg name="c2g_map" default="$(find imredd_mushr_map_test)/maps/out.yaml" />
+    <arg name="tg" default="dispersion" />
 
     <node pkg="map_server" name="map_server" type="map_server" args="$(arg map)" />
     <node pkg="map_server" name="c2g_map" type="map_server" args="$(arg c2g_map)">
@@ -16,6 +17,18 @@
     <!-- Launch car -->
 
     <group ns="$(arg car_name)">
+
+        <node pkg="mushr_rhc_ros" type="rhcnode.py" name="rhcontroller" output="screen">
+            <env name="RHC_USE_CUDA" value="0" />
+
+            <param name="inferred_pose_t" value="car_pose" />
+            <param name="car_name" value="$(arg car_name)" />
+
+            <rosparam file="$(find mushr_rhc_ros)/launch/params/trajgen/$(arg tg).yaml" />
+            <rosparam file="$(find mushr_rhc_ros)/launch/params/all_params.yaml" />
+            <rosparam file="$(find mushr_rhc_ros)/launch/sim/params.yaml" />
+        </node>
+
         <remap from="/$(arg car_name)/initialpose" to="/initialpose" />
 
         <include file="$(find mushr_sim)/launch/single_car.launch">
@@ -28,6 +41,10 @@
 
             <arg name="car_name" value="$(arg car_name)" />
          </include>
+    </group>
+
+    <group ns="$(arg car_name)">
+
     </group>
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find imredd_mushr_map_test)/config/rviz.rviz" required="true"/>
